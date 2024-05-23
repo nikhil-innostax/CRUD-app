@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchComments, addComments } from "./App/DataAction";
+import Fetch from "./components/Fetch";
 function App() {
+  // const dispatch = useDispatch();
+  // const random=useSelector(state=>state.data.data)
+  // useEffect(() => {
+  //   console.log("Fetched comments");
+  //    dispatch(fetchComments())
+  // }, []);
+  // console.log("random - ", random);
+  // // const data = dispatch(fetchData);
+  // // console.log("data", data);
+  // // <div>{random}</div>
+
+  // useEffect(()=>{
+  //   console.log("Added comments");
+  //   dispatch(addComments({id: 25, postId: 31, userId: 21, comment: 'Sed mollis sagii'}))
+
+  // },[])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Fetch/>
+  )
 }
 
 export default App;
