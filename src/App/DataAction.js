@@ -37,12 +37,41 @@ export const addComments = createAsyncThunk("commentData/addComment", async (que
   } 
 );
 
-export const deleteComments=createAsyncThunk('commentData/deleteComment', async(id)=>{
+export const deleteComments = createAsyncThunk('commentData/deleteComment', async (id) => {
+        try {
+            const response = await fetch(`https://jsonplaceholder.typicode.com/comments/${id}`, {method: 'DELETE' });
+            if (!response.ok) {
+                throw new Error('Failed to delete');
+            }
+            const data = await response.json();
+            if(data){
+                console.log(id)
+                return id;
+            }
+            else{
+                throw new Error("Not deleted")
+            }
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+);
+
+export const updateComments=createAsyncThunk("commentData/updateComment",async({id,text}) => {
     try{
-        await fetch(`https://jsonplaceholder.org/comments'/${id}`,{method:'DELETE'})
-        return id
+        const response=await fetch(`https://jsonplaceholder.typicode.com/comments/${id}`,{method:"PATCH",headers:{"Content-type":"application/json"},body:JSON.stringify({id,text})})
+        if(!response.ok){
+          throw new Error('Failed to update')
+        }
+        const data=await response.json();
+        if(data){console.log("DATA", data);return {id,text}}
+        else{
+          throw new Error('Not updated')
+        }
+    }catch(error){
+      throw new Error(error.message)
     }
-    catch(error){
-        throw new Error(error.message)
-    }
-})
+  }
+
+)
+

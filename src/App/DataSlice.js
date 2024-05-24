@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchComments,addComments,deleteComments} from "./DataAction";
+import { fetchComments,addComments,deleteComments,updateComments} from "./DataAction";
 
 const dataSlice = createSlice({
   name: "data",
@@ -21,11 +21,27 @@ const dataSlice = createSlice({
         state.data?.push(action.payload)
 
     })
-    .addCase(deleteComments.fulfilled,(state,action)=>{
-      state.status="success";
-      const filteredData=state.data.filter(item=>item._id!==action.payload)
-      state.data=filteredData
-      console.log(filteredData)
+    .addCase(deleteComments.fulfilled, (state, action) => {
+        state.status = "success";
+        console.log("delete",action.payload);
+        state.data = state.data.filter(item => item.id !== action.payload);
+        console.log(state.data.id)
+    })
+    .addCase(updateComments.fulfilled, (state, action) => {
+        state.status = "success";
+
+        console.log("id",action.payload.id)
+        state.data = state.data.map(item =>{
+          (console.log(action.payload,"Hello",item))
+          if(item.id===action.payload.text.id){
+            return action.payload.text
+          }
+          else{
+            return item
+          }
+        }
+        );
+        console.log("Updated",action)
     })
   },
 });

@@ -19,23 +19,3 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
-/*
-export const addUserData = createAsyncThunk(
-    "userData/addUserData",
-    async (data) => {
-      try {
-        const url = `http://localhost:3001/add`;
-        const options = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        };
-        await fetch(url, options)
-      } catch (error) {
-        throw new Error(error.message)
-      }
-    }
-  )
-*/
