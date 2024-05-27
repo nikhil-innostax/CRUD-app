@@ -1,78 +1,94 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchComments, addComments, deleteComments, updateComments } from "../App/DataAction";
+import { Formik,Form,Field } from "formik";
+import { userSchema } from "../Schema";
+
 
 const Fetch = () => {
     const [editIndex, setEditIndex] = useState(null);
+    const [obj,setObj]=useState({first:"",last:"",email:"",roll:""})
     const dispatch = useDispatch();
     const random = useSelector(state => state.data.data);
-    const [obj, setObj] = useState({ id:"", postId: "", userId: "", comment: "" });
+    console.log(random)
 
     useEffect(() => {
         console.log("Fetched comments");
         dispatch(fetchComments());
     }, [dispatch]);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (editIndex ) {
-            console.log(editIndex,obj)
-            dispatch(updateComments({id: editIndex,text:obj}))
-          } else {
-            dispatch(addComments(obj));
-          }        
-        setObj({ id: "", postId: "", userId: "", comment: "" });
+    const handleSubmit = (values,actions) => {
+        console.log(values);
+        if(editIndex){
+            console.log('Updated')
+            dispatch(updateComments({id:editIndex,text:values}))
+            setEditIndex(null)
+        }
+        else{            
+            dispatch(addComments(values));
+        }
+        setObj({ first: "", last: "", email: "", roll: "" });
+        actions.resetForm({ values: { first: "", last: "", email: "", roll: "" } });
     };
 
-    const handleEdit=(id)=>{
-        const item=random[id-1];
-        setObj(item);
-        setEditIndex(id);
+    const handleDelete = (ind) => {
+        console.log("delete",random[ind]._id);
+        dispatch(deleteComments(random[ind]._id));
+    };
+
+    function handleEdit(ind){
+        const item=random[ind];
+        setEditIndex(item._id);
+        setObj(item)
+        console.log(item);
+        
     }
-
-    const handleDelete = (id) => {
-        console.log("delete");
-        dispatch(deleteComments(id));
-    };
-
     return (
         <>
             <h1 className="text-orange-600 text-3xl text-center m-4 p-4">Form:</h1>
-            <form onSubmit={handleSubmit} className="text-center p-4 m-4">
-                <label className="p-4 m-4 text-xl">Id:</label><br />
-                <input type="text" className="p-2 border border-black text-black" value={obj.id} onChange={(e) => setObj({ ...obj, id: e.target.value })} />
-                <br />
-                <label className="p-4 m-4 text-xl">Post Id:</label><br />
-                <input className="p-2 border border-black" type="text" value={obj.postId} onChange={(e) => setObj({ ...obj, postId: e.target.value })} />
-                <br />
-                <label className="p-4 m-4 text-xl"> User Id:</label><br />
-                <input type="text" className="p-2 border border-black" value={obj.userId} onChange={(e) => setObj({ ...obj, userId: e.target.value })} />
-                <br />
-                <label className="p-4 m-4 text-xl">Comment</label><br />
-                <input type="text" className="p-2 border border-black" value={obj.comment} onChange={(e) => setObj({ ...obj, comment: e.target.value })} />
-                <br />
-                <button type="submit" className="p-4 m-4 bg-gray-700 text-white">Submit</button>
-            </form>
+            <Formik initialValues={obj} enableReinitialize={true} validationSchema={userSchema} onSubmit={handleSubmit}>
+                {({errors,touched})=>(
+                <Form className="text-center p-4 m-4">
+                    <label className="p-4 m-4 text-xl">First Name:</label><br />
+                    <Field type="text" className="p-2 border border-black text-black" name="first" />
+                    {errors.first && touched.first && <p className="text-red-700">{errors.first}</p>}
+                    <br />
+                    <label className="p-4 m-4 text-xl">Last Name:</label><br />
+                    <Field className="p-2 border border-black" type="text" name="last"/>
+                    {errors.last && touched.last && <p className="text-red-700">{errors.last}</p>}
+                    <br />
+                    <label className="p-4 m-4 text-xl"> Email:</label><br />
+                    <Field type="text" className="p-2 border border-black" name="email" />
+                    {errors.email && touched.email && <p className="text-red-700">{errors.email}</p>}
+                    <br />
+                    <label className="p-4 m-4 text-xl">Roll No.</label><br />
+                    <Field type="text" className="p-2 border border-black" name="roll" />
+                    {errors.roll && touched.roll && <p className="text-red-700">{errors.roll}</p>}
+                    <br />
+                    <button type="submit" className="p-4 m-4 bg-gray-700 text-white">Submit</button>
+                </Form>
+                )}
+            </Formik>  
             <table className="w-10/12 text-center m-auto border border-black border-collapse">
                 <thead className="border border-black">
                     <tr>
-                        <th className="border border-black">Id</th>
-                        <th className="border border-black">Post Id</th>
-                        <th className="border border-black">User id</th>
-                        <th className="border border-black">Comment</th>
+                        <th className="border border-black">First Name:</th>
+                        <th className="border border-black">Last Name:</th>
+                        <th className="border border-black">Email:</th>
+                        <th className="border border-black">Roll No.</th>
                         <th className="border border-black">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {random && random.map((e) => (
-                        <tr key={e.id}>
-                            <td className="border border-black">{e?.id}</td>
-                            <td className="border border-black">{e?.postId}</td>
-                            <td className="border border-black">{e.userId}</td>
-                            <td className="border border-black">{e?.comment?.substring(0, 20)}</td>
+                    {random && random.map((e,ind) => (
+                        <tr key={e._id}>
+                            <td className="border border-black">{e?.first}</td>
+                            <td className="border border-black">{e?.last}</td>
+                            <td className="border border-black">{e.email}</td>
+                            <td className="border border-black">{e?.roll}</td>
                             <td>
-                                <button onClick={()=>handleEdit(e.id)} className="text-white bg-blue-600 m-2 p-2">Edit</button>
-                                <button onClick={() => handleDelete(e.id)} className="text-white bg-red-600 m-2 p-2">Delete</button>
+                                <button onClick={()=>handleEdit(ind)} className="text-white bg-blue-600 m-2 p-2">Edit</button>
+                                <button onClick={() => handleDelete(ind)} className="text-white bg-red-600 m-2 p-2">Delete</button>
                             </td>
                         </tr>
                     ))}
@@ -83,86 +99,3 @@ const Fetch = () => {
 };
 
 export default Fetch;
-
-
-
-
-// import React, { useState, useEffect } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { fetchComments, addComments, deleteComments } from "../App/DataAction";
-
-// const Fetch=()=>{
-//      const dispatch = useDispatch();
-//     const random=useSelector(state=>state.data.data)
-//     const [obj,setObj]=useState({id:"",postId:"",userId:"",comment:""});
-//     useEffect(() => {
-//       console.log("Fetched comments");
-//        dispatch(fetchComments())
-//     }, []);
-//     console.log("random - ", random);
-//     //  const addData=()=>{
-//     //     console.log("Added comments");
-//     //     dispatch(addComments({id: 25, postId: 31, userId: 21, comment: 'Sed mollis sagii'}))
-//     //  }
-//       const handleSubmit=(e)=>{
-//         e.preventDefault();
-//         dispatch(addComments(obj))
-//         setObj({id:"",postId:"",userId:"",comment:""}) 
-//       }
-//       const handleDelete = (id) => {
-//         console.log("delete")
-//         dispatch(deleteComments(id));
-//     }
-
-//     // const data = dispatch(fetchData);
-//     // console.log("data", data);
-//     // <div>{random}</div>
-//     return(
-//       <>
-//         <h1 className="text-orange-600 text-3xl text-center m-4 p-4">Form:</h1>
-//         <form onSubmit={handleSubmit}className="text-center p-4 m-4">
-//             <label className="p-4 m-4 text-xl">Id:</label><br/>
-//             <input type="text" className="p-2 border border-black text-black" value={obj.id} onChange={(e)=>setObj({...obj,id:e.target.value})}/>
-//             <br/>
-//             <label className="p-4 m-4 text-xl">Post Id:</label><br/>
-//             <input className="p-2 border border-black" type="text" value={obj.postId} onChange={(e)=>setObj({...obj,postId:e.target.value})} />
-//             <br/>
-//             <label className="p-4 m-4 text-xl"> User Id:</label><br/>
-//             <input type="text" className="p-2 border border-black" value={obj.userId} onChange={(e)=>setObj({...obj,userId:e.target.value})}/>
-//             <br/>
-//             <label className="p-4 m-4 text-xl">Comment</label><br/>
-//             <input type="text" className="p-2 border border-black" value={obj.comment} onChange={(e)=>setObj({...obj,comment:e.target.value})}/>
-//             <br/>
-//             <button type="submit" className="p-4 m-4 bg-gray-700 text-white">Submit</button>
-//         </form>
-//         <table className="w-10/12 text-center m-auto border border-black border-collapse">
-//             <thead className="border border-black">
-//                 <th className="border border-black">Id</th>
-//                 <th className="border border-black">Post Id</th>
-//                 <th className="border border-black">User id</th>
-//                 <th className="border border-black">Comment</th>
-//                 <th className="border border-black">Action</th>
-//             </thead>
-//             <tbody>
-//                 {
-//                    random &&  random.map((e)=>(
-//                         <tr id={e.id}>
-//                             <td className="border border-black">{e?.id}</td>
-//                             <td className="border border-black">{e?.postId}</td>
-//                             <td className="border border-black">{e.userId}</td>
-//                             <td className="border border-black">{e?.comment.substring(0,20)}</td>
-//                             <td>
-//                                 <button className="text-white bg-blue-600 m-2 p-2">Edit</button>
-//                                 <button onClick={() => handleDelete(e.id)} className="text-white bg-red-600 m-2 p-2">Delete</button>
-//                             </td>
-//                         </tr>
-//                     ))
-//                 }
-//             </tbody>
-//         </table>
-//       </>
-//     )
-
-// }
-
-// export default Fetch;

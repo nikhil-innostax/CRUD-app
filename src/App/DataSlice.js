@@ -4,7 +4,7 @@ import { fetchComments,addComments,deleteComments,updateComments} from "./DataAc
 const dataSlice = createSlice({
   name: "data",
   initialState: {
-    data: null,
+    data: [],
     status: "idle",
     error: null,
   },
@@ -13,33 +13,32 @@ const dataSlice = createSlice({
     builder
     .addCase(fetchComments.fulfilled, (state, action) => {
       state.status = "succeeded";
+      console.log("Added")
       state.data = action.payload;
     })
     .addCase(addComments.fulfilled,(state,action)=>{
         state.status="success"
-        console.log(action)
-        state.data?.push(action.payload)
+        console.log(action,state.data)
+        state.data.push(action.payload)
 
     })
     .addCase(deleteComments.fulfilled, (state, action) => {
         state.status = "success";
-        console.log("delete",action.payload);
-        state.data = state.data.filter(item => item.id !== action.payload);
-        console.log(state.data.id)
+        const filter=state.data.filter(item=>item._id!==action.payload)
+        state.data=filter
+        console.log(filter)
     })
     .addCase(updateComments.fulfilled, (state, action) => {
         state.status = "success";
-
-        console.log("id",action.payload.id)
+        console.log("update id",action.payload,state.data)
         state.data = state.data.map(item =>{
-          (console.log(action.payload,"Hello",item))
-          if(item.id===action.payload.text.id){
+          if(item._id===action.payload.id){
             return action.payload.text
           }
           else{
             return item
           }
-        }
+        },
         );
         console.log("Updated",action)
     })

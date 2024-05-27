@@ -2,13 +2,14 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchComments = createAsyncThunk("commentData/fetchData", async () => {
   try {
-    const response = await fetch("https://jsonplaceholder.org/comments",{method: 'GET'});
+    const response = await fetch("http://localhost:3000/",{method: 'GET'});
     if (!response.ok) {
       throw new Error("Failed to fetch comments");
     }
     const data = await response.json();
     if (data) {
-      return data;
+      return data.user;
+      // return data
     } else {
       throw new Error("Incomplete");
     }
@@ -21,13 +22,14 @@ export const fetchComments = createAsyncThunk("commentData/fetchData", async () 
 
 export const addComments = createAsyncThunk("commentData/addComment", async (query) => {
   try {
-     const response=await fetch("https://jsonplaceholder.org/comments",{method: 'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(query)});
+     const response=await fetch("http://localhost:3000/create",{method: 'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(query)});
      if(!response.ok){
         throw new Error('Failed to add')
      }
      const data=await response.json();
      if(data){
-        return data;
+        return data.user;
+        // return data 
      } else{
         throw new Error("Not added")
      }
@@ -39,7 +41,7 @@ export const addComments = createAsyncThunk("commentData/addComment", async (que
 
 export const deleteComments = createAsyncThunk('commentData/deleteComment', async (id) => {
         try {
-            const response = await fetch(`https://jsonplaceholder.typicode.com/comments/${id}`, {method: 'DELETE' });
+            const response = await fetch(`http://localhost:3000/${id}`, {method: 'DELETE' });
             if (!response.ok) {
                 throw new Error('Failed to delete');
             }
@@ -59,7 +61,7 @@ export const deleteComments = createAsyncThunk('commentData/deleteComment', asyn
 
 export const updateComments=createAsyncThunk("commentData/updateComment",async({id,text}) => {
     try{
-        const response=await fetch(`https://jsonplaceholder.typicode.com/comments/${id}`,{method:"PATCH",headers:{"Content-type":"application/json"},body:JSON.stringify({id,text})})
+        const response=await fetch(`http://localhost:3000/${id}`,{method:"PATCH",headers:{"Content-type":"application/json"},body:JSON.stringify({id,text})})
         if(!response.ok){
           throw new Error('Failed to update')
         }
