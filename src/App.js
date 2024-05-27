@@ -1,8 +1,15 @@
-import React from "react";
-import Fetch from "./components/Fetch";
+import React,{useState} from "react";
+import FormFormik from "./components/FormFormik";
+import ShowUserData from "./components/ShowUserData";
+
 function App() {
+  const [editUser, setEditUser] = useState(null);
+  const [userDetails,setUserDetails]=useState({first:"",last:"",email:"",roll:""})
   return (
-    <Fetch/>
+    <>
+        <FormFormik editUser={editUser} setEditUser={setEditUser} userDetails={userDetails} setUserDetails={setUserDetails}/>
+        <ShowUserData setEditUser={setEditUser} setUserDetails={setUserDetails}/>
+    </>
   )
 }
 

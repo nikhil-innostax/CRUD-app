@@ -1,10 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const fetchComments = createAsyncThunk("commentData/fetchData", async () => {
+export const fetchUser = createAsyncThunk("commentData/fetchData", async () => {
   try {
     const response = await fetch("http://localhost:3000/",{method: 'GET'});
     if (!response.ok) {
-      throw new Error("Failed to fetch comments");
+      throw new Error("Failed to fetch User");
     }
     const data = await response.json();
     if (data) {
@@ -20,7 +20,7 @@ export const fetchComments = createAsyncThunk("commentData/fetchData", async () 
 
 
 
-export const addComments = createAsyncThunk("commentData/addComment", async (query) => {
+export const addUser = createAsyncThunk("commentData/addComment", async (query) => {
   try {
      const response=await fetch("http://localhost:3000/create",{method: 'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(query)});
      if(!response.ok){
@@ -39,7 +39,7 @@ export const addComments = createAsyncThunk("commentData/addComment", async (que
   } 
 );
 
-export const deleteComments = createAsyncThunk('commentData/deleteComment', async (id) => {
+export const deleteUser = createAsyncThunk('commentData/deleteComment', async (id) => {
         try {
             const response = await fetch(`http://localhost:3000/${id}`, {method: 'DELETE' });
             if (!response.ok) {
@@ -47,7 +47,6 @@ export const deleteComments = createAsyncThunk('commentData/deleteComment', asyn
             }
             const data = await response.json();
             if(data){
-                console.log(id)
                 return id;
             }
             else{
@@ -59,14 +58,14 @@ export const deleteComments = createAsyncThunk('commentData/deleteComment', asyn
     }
 );
 
-export const updateComments=createAsyncThunk("commentData/updateComment",async({id,text}) => {
+export const updateUser=createAsyncThunk("commentData/updateComment",async({id,text}) => {
     try{
         const response=await fetch(`http://localhost:3000/${id}`,{method:"PATCH",headers:{"Content-type":"application/json"},body:JSON.stringify({id,text})})
         if(!response.ok){
           throw new Error('Failed to update')
         }
         const data=await response.json();
-        if(data){console.log("DATA", data);return {id,text}}
+        if(data){return {id,text}}
         else{
           throw new Error('Not updated')
         }
