@@ -20,7 +20,7 @@ export const fetchUser = createAsyncThunk("commentData/fetchData", async () => {
 
 export const addUser = createAsyncThunk("commentData/addData", async (query) => {
   try {
-     const response=await fetch("http://localhost:3000/users/create",{method: 'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(query)});
+     const response=await fetch("http://localhost:3000/users/",{method: 'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(query)});
      if(!response.ok){
         throw new Error('Failed to add')
      }
@@ -39,7 +39,7 @@ export const addUser = createAsyncThunk("commentData/addData", async (query) => 
 
 export const deleteUser = createAsyncThunk('commentData/deleteData', async (id) => {
         try {
-            const response = await fetch(`http://localhost:3000/users/delete/${id}`, {method: 'DELETE' });
+            const response = await fetch(`http://localhost:3000/users/${id}`, {method: 'DELETE' });
             if (!response.ok) {
                 throw new Error('Failed to delete');
             }
@@ -58,7 +58,7 @@ export const deleteUser = createAsyncThunk('commentData/deleteData', async (id) 
 
 export const updateUser=createAsyncThunk("commentData/updateData",async({id,text}) => {
     try{
-        const response=await fetch(`http://localhost:3000/users/update/${id}`,{method:"PATCH",headers:{"Content-type":"application/json"},body:JSON.stringify({id,text})})
+        const response=await fetch(`http://localhost:3000/users/${id}`,{method:"PATCH",headers:{"Content-type":"application/json"},body:JSON.stringify({id,text})})
         if(!response.ok){
           throw new Error('Failed to update')
         }

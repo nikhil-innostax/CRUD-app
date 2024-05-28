@@ -21,7 +21,6 @@ const ShowUserData=({setEditUser,setUserDetails})=>{
                         <th className="border border-black">Last Name:</th>
                         <th className="border border-black">Email:</th>
                         <th className="border border-black">Roll No.</th>
-                        <th className="border border-black">Barcode</th>
                         <th className="border border-black">Action</th>
                     </tr>
                 </thead>
@@ -32,11 +31,11 @@ const ShowUserData=({setEditUser,setUserDetails})=>{
                             <td className="border border-black">{e?.last}</td>
                             <td className="border border-black">{e.email}</td>
                             <td className="border border-black">{e?.roll}</td>
-                            <div className="border border-black flex justify-between"><td className="border border-black mx-auto"><Barcode text={JSON.stringify(e)} blockWidth={2} blockHeight={1} /></td></div>
                             <td className="border border-black">
-                                <div className="flex justify-center">                
-                                    <div className="my-auto "><button onClick={()=>handleEdit(ind)} className="text-white bg-blue-600 m-2 p-2">Edit</button></div>
-                                    <div className="my-auto "><button onClick={() => handleDelete(ind)} className="text-white bg-red-600 m-2 p-2">Delete</button></div>
+                                <div className="flex justify-evenly">       
+                                    <Barcode text={JSON.stringify(e)} blockWidth={2} blockHeight={1} />         
+                                    <div className="my-auto"><button onClick={()=>handleEdit(ind)} className="text-white bg-blue-600 m-2 p-2 rounded-xl">Edit</button></div>
+                                    <div className="my-auto"><button onClick={() => handleDelete(ind)} className="text-white bg-red-600 m-2 p-2 rounded-xl">Delete</button></div>
                                 </div>
                             </td>
                         </tr>
