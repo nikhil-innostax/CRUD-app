@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { fetchUser, addUser, updateUser } from "../App/DataAction";
+import { fetchUser, addUser, updateUser } from "../App/dataAction";
 import { Formik,Form,Field } from "formik";
-import { userSchema } from "../userSchema";
-
-
+import { userSchema } from "../UserSchema";
 
 const FormFormik = ({editUser,setEditUser,userDetails,setUserDetails}) => {
 

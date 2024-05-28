@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUser,addUser,deleteUser,updateUser} from "./DataAction";
+import { fetchUser,addUser,deleteUser,updateUser} from "./dataAction";
 
 const dataSlice = createSlice({
   name: "data",
@@ -39,7 +39,5 @@ const dataSlice = createSlice({
     })
   },
 });
-
-// export {}= dataSlice
 
 export default dataSlice.reducer;

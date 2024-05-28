@@ -1,6 +1,7 @@
-import React,{useState} from "react";
-import FormFormik from "./components/FormFormik";
-import ShowUserData from "./components/ShowUserData";
+import React from "react";
+import { useState } from "react";
+import FormFormik from "./Components/FormFormik";
+import ShowUserData from "./Components/ShowUserData";
 
 function App() {
   const [editUser, setEditUser] = useState(null);
@@ -14,3 +15,4 @@ function App() {
 }
 
 export default App;
+

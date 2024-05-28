@@ -1,6 +1,6 @@
 import { useSelector,useDispatch } from "react-redux"
-import {deleteUser} from "../App/DataAction";
-
+import {deleteUser} from "../App/dataAction";
+import Barcode from "./Barcode";
 
 const ShowUserData=({setEditUser,setUserDetails})=>{
     const dispatch=useDispatch();
@@ -31,9 +31,12 @@ const ShowUserData=({setEditUser,setUserDetails})=>{
                             <td className="border border-black">{e?.last}</td>
                             <td className="border border-black">{e.email}</td>
                             <td className="border border-black">{e?.roll}</td>
-                            <td>
-                                <button onClick={()=>handleEdit(ind)} className="text-white bg-blue-600 m-2 p-2">Edit</button>
-                                <button onClick={() => handleDelete(ind)} className="text-white bg-red-600 m-2 p-2">Delete</button>
+                            <td className="border border-black">
+                                <div className="flex justify-evenly">       
+                                    <Barcode text={JSON.stringify(e)} blockWidth={2} blockHeight={1} />         
+                                    <div className="my-auto"><button onClick={()=>handleEdit(ind)} className="text-white bg-blue-600 m-2 p-2 rounded-xl">Edit</button></div>
+                                    <div className="my-auto"><button onClick={() => handleDelete(ind)} className="text-white bg-red-600 m-2 p-2 rounded-xl">Delete</button></div>
+                                </div>
                             </td>
                         </tr>
                     ))}
