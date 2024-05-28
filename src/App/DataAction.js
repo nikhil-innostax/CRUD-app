@@ -9,7 +9,6 @@ export const fetchUser = createAsyncThunk("commentData/fetchData", async () => {
     const data = await response.json();
     if (data) {
       return data.user;
-      // return data
     } else {
       throw new Error("Incomplete");
     }
@@ -20,14 +19,13 @@ export const fetchUser = createAsyncThunk("commentData/fetchData", async () => {
 
 export const addUser = createAsyncThunk("commentData/addData", async (query) => {
   try {
-     const response=await fetch("http://localhost:3000/users/",{method: 'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(query)});
+     const response=await fetch("http://localhost:3000/users",{method: 'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(query)});
      if(!response.ok){
         throw new Error('Failed to add')
      }
      const data=await response.json();
      if(data){
         return data.user;
-        // return data 
      } else{
         throw new Error("Not added")
      }
